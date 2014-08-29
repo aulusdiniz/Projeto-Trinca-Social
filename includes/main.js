@@ -311,7 +311,12 @@ window.onload = function() {
 											//--Criar botão para publicar trinca 
 											//--Salvar dados das trincas.
 											//--Limpar trinca e continuar o jogo.
-											publishTrinca();
+											
+											//publishTrinca();
+											$("#popup_window").load("sample.html");
+											$("#popup_window").css( "visibility", "true" );
+											$("#popup_window").css( "background-color", "#09C" );
+											
 										}
 							}
 							else{

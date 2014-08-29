@@ -19,6 +19,27 @@ width:1000px;
 margin:0 auto;
 }
 
+#popup_window{
+visibility:false;
+position:absolute;
+height:300px;
+width:500px;
+top:50%;
+left:50%;
+z-index:10;
+	}
+
+textarea#styled {
+	width: 600px;
+	height: 120px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+	background-image: url(bg.gif);
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
 #wrapper_publish {
 color:#ffff00;
 width:1200px;
