@@ -314,7 +314,7 @@ window.onload = function() {
 											
 											//publishTrinca();
 											$("#popup_window").load("sample.html");
-											$("#popup_window").css( "visibility", "true" );
+											$("#popup_window").css( "display", "inline" );
 											$("#popup_window").css( "background-color", "#09C" );
 											
 										}
