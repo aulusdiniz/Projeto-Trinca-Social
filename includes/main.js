@@ -306,17 +306,13 @@ window.onload = function() {
 									Dealer.tradeOp = 0;
 									
 									if(trinca.checkEndgame()){
-										//alert("Você já pode publicar uma trinca!");
 										//------TODO
 											//--Criar botão para publicar trinca 
 											//--Salvar dados das trincas.
 											//--Limpar trinca e continuar o jogo.
-											
-											//publishTrinca();
+
 											$("#popup_window").load("question_publish.html");
-											$("#popup_window").css( "display", "inline" );
-											//$("#popup_window").css( "background-color", "#09C" );
-											
+											$("#popup_window").css( "display", "inline" );											
 										}
 							}
 							else{
@@ -348,26 +344,9 @@ window.onload = function() {
 					}
 				}
 			}
-		});
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
-var publishBoxBg = new Surface((window.screen.availWidth/3), (window.screen.availHeight/3));
+		});	
 
-var asking = new Label("Você quer publicar essa trinca agora?");
-	asking.x = window.screen.availWidth/3;
-	asking.y = window.screen.availHeight/3;
-	
-var yes_label = new Label("Sim");
-var no_label = new Label("Não");	
-	
-	publishBoxBg.x = window.screen.availWidth/3;
-	publishBoxBg.y = window.screen.availHeight/3;
-
-function publishTrinca(){
-	game.rootScene.addChild(publishBoxBg);
-	game.rootScene.addChild(asking);
-}
-		
-//=================================================================Containers para Slots===============//		
+//==============Containers para Slots===============//		
 	var Holder = enchant.Class.create({
 		initialize: function(slots){
 			this.slots = slots;
