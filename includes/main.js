@@ -1,5 +1,8 @@
+
  	enchant();
+ 		
 window.onload = function() {	
+
     var game = new Game(window.screen.availWidth, window.screen.availHeight);
 	//Escalas
 	var sprite_scale = 3/5;
@@ -9,7 +12,9 @@ window.onload = function() {
 	var spacing_ver = -sprite_width/3;
 	var desl_hor = 200;
 	var desl_ver = 100;
-	
+		
+
+
 		//carrega as imagens necessárias na hora que o jogo liga, disponibiliza em game.assets(['../imgs/cards/s001.png']);
     	game.preload(
 			'../imgs/cards/casa-01.png',
@@ -115,7 +120,7 @@ window.onload = function() {
 			'../imgs/cards/slot.png',
 			'../imgs/cards/deck.png'
 			);
-		
+
 		//fundo verde, igual ao html;	
 		game.rootScene.backgroundColor = '#0d591d';
 
@@ -166,7 +171,9 @@ window.onload = function() {
 			this.addEventListener('touchend', function(){	
 				this.giveCard(holder);
             });
+
             game.rootScene.addChild(this);
+
         }
     });
 	
@@ -208,6 +215,9 @@ window.onload = function() {
 			Slot.call(this, sprite_width, sprite_height);
 			this.x = x;
 			this.y = y;
+			//this.height = 260;
+			//this.width = 168;
+			//this.scale(sprite_scale,sprite_scale);
 			//seleção de carta.
 			this.addEventListener('touchend', function(){	
 				if(!this.isEmpty || Dealer.tradeOne!=null)
@@ -295,10 +305,6 @@ window.onload = function() {
 									var tempBool = Dealer.tradeOne.isEmpty;
 									Dealer.tradeOne.isEmpty = Dealer.tradeTwo.isEmpty;
 									Dealer.tradeTwo.isEmpty = tempBool;
-									//if(Dealer.tradeOne.isEmpty==true)
-										//deck.giveCardToSlot(Dealer.tradeOne); 
-									//if(Dealer.tradeTwo.isEmpty==true)
-										//deck.giveCardToSlot(Dealer.tradeTwo);
 									Dealer.unselectCard(Dealer.tradeOne);
 									Dealer.unselectCard(Dealer.tradeTwo);
 									Dealer.tradeOne = null;
@@ -307,16 +313,14 @@ window.onload = function() {
 									
 									if(trinca.checkEndgame()){
 										//alert("Você já pode publicar uma trinca!");
-										//------TODO
-											//--Criar botão para publicar trinca 
-											//--Salvar dados das trincas.
-											//--Limpar trinca e continuar o jogo.
-											publishTrinca();
+										//$("#enchant-stage").css("display","none");								
+										$("#publish_now").css("display","inline");
+										$("#publish_now").html("<h1>Gostaria de publicar essa trinca agora?</h1> <a href>. Sim .</a> <a href>. Não .</a>");
 										}
 							}
 							else{
 								//Não permite o destaque de espaço vazio na trinca.
-								if(obj.isEmpty){
+									if(obj.isEmpty){
 									Dealer.unselectCard(Dealer.tradeOne);
 									Dealer.unselectCard(obj);
 									Dealer.tradeOne = null;
@@ -344,23 +348,6 @@ window.onload = function() {
 				}
 			}
 		});
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
-var publishBoxBg = new Surface((window.screen.availWidth/3), (window.screen.availHeight/3));
-
-var asking = new Label("Você quer publicar essa trinca agora?");
-	asking.x = window.screen.availWidth/3;
-	asking.y = window.screen.availHeight/3;
-	
-var yes_label = new Label("Sim");
-var no_label = new Label("Não");	
-	
-	publishBoxBg.x = window.screen.availWidth/3;
-	publishBoxBg.y = window.screen.availHeight/3;
-
-function publishTrinca(){
-	game.rootScene.addChild(publishBoxBg);
-	game.rootScene.addChild(asking);
-}
 		
 //=================================================================Containers para Slots===============//		
 	var Holder = enchant.Class.create({
@@ -570,6 +557,11 @@ function publishTrinca(){
 		/*for(var i=0;i<6;i++){	
 			//deck.giveCard(holder);
 		}*/
+
+		//$("#enchant-stage").css("display","inline");
+		$("#enchant-stage").show();
+
     };
+
     game.start();
 };
