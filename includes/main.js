@@ -1,8 +1,6 @@
 
  	enchant();
- 		
 window.onload = function() {	
-
     var game = new Game(window.screen.availWidth, window.screen.availHeight);
 	//Escalas
 	var sprite_scale = 3/5;
@@ -12,9 +10,7 @@ window.onload = function() {
 	var spacing_ver = -sprite_width/3;
 	var desl_hor = 200;
 	var desl_ver = 100;
-		
-
-
+	
 		//carrega as imagens necessárias na hora que o jogo liga, disponibiliza em game.assets(['../imgs/cards/s001.png']);
     	game.preload(
 			'../imgs/cards/casa-01.png',
@@ -120,7 +116,7 @@ window.onload = function() {
 			'../imgs/cards/slot.png',
 			'../imgs/cards/deck.png'
 			);
-
+		
 		//fundo verde, igual ao html;	
 		game.rootScene.backgroundColor = '#0d591d';
 
@@ -154,7 +150,8 @@ window.onload = function() {
 			this.giveCardToSlot = function(target){//preenche o espaço que sobra ao trocar as cartas.
 				if(this.availCards.length>0){
 					var rand = Math.floor(Math.random()*this.availCards.length);
-					target.image = this.availCards[rand];
+					target.image = this.availCards[rand].image;
+					target.name = this.availCards[rand].name;
 					target.isEmpty = false;
 					this.usedCards.push(this.availCards.slice(rand));
 					this.availCards.splice(rand,1);
@@ -171,22 +168,32 @@ window.onload = function() {
 			this.addEventListener('touchend', function(){	
 				this.giveCard(holder);
             });
-
             game.rootScene.addChild(this);
-
         }
     });
 	
+	var Card = enchant.Class.create({
+		initialize: function(name, asset){
+			this.name = name;
+			this.image = asset;
+		}
+	});
+
+
 //==============================================================================Slots para cartas==========//	
 	var Slot = enchant.Class.create(enchant.Sprite, {
 		initialize: function(x, y){
 			enchant.Sprite.call(this, sprite_width, sprite_height);
 			this.x = x;
 			this.y = y;
+			this.name = null;
 			this.isEmpty = true;
 			this.updateImage = function(asset){
 				this.image = asset;
 				}
+			this.updateName = function(name){
+				this.name = name;
+				}				
 			this.getImage = function(){
 				return this.image;
 				}	
@@ -215,8 +222,6 @@ window.onload = function() {
 			Slot.call(this, sprite_width, sprite_height);
 			this.x = x;
 			this.y = y;
-			//this.height = 260;
-			//this.width = 168;
 			//this.scale(sprite_scale,sprite_scale);
 			//seleção de carta.
 			this.addEventListener('touchend', function(){	
@@ -298,11 +303,18 @@ window.onload = function() {
 								}
 							}
 							if(obj.y != Dealer.tradeOne.y){
+									
 									var tempObj = obj.image;
+									var tempNameObj = obj.name;
+
 									Dealer.tradeTwo = obj;
 									Dealer.tradeTwo.updateImage(Dealer.tradeOne.image);
+									Dealer.tradeTwo.updateName(Dealer.tradeOne.name);
 									Dealer.tradeOne.updateImage(tempObj);
+									Dealer.tradeOne.updateName(tempNameObj);
+									
 									var tempBool = Dealer.tradeOne.isEmpty;
+									
 									Dealer.tradeOne.isEmpty = Dealer.tradeTwo.isEmpty;
 									Dealer.tradeTwo.isEmpty = tempBool;
 									Dealer.unselectCard(Dealer.tradeOne);
@@ -313,14 +325,16 @@ window.onload = function() {
 									
 									if(trinca.checkEndgame()){
 										//alert("Você já pode publicar uma trinca!");
-										//$("#enchant-stage").css("display","none");								
+										//$("#enchant-stage").css("display","none");
+										//$("#enchant-stage").hide();
+
+										//$("#publish_now").css({"display":"block","background-color":"white"});
 										$("#publish_now").css("display","inline");
-										$("#publish_now").html("<h1>Gostaria de publicar essa trinca agora?</h1> <a href>. Sim .</a> <a href>. Não .</a>");
 										}
 							}
 							else{
 								//Não permite o destaque de espaço vazio na trinca.
-									if(obj.isEmpty){
+								if(obj.isEmpty){
 									Dealer.unselectCard(Dealer.tradeOne);
 									Dealer.unselectCard(obj);
 									Dealer.tradeOne = null;
@@ -365,10 +379,12 @@ window.onload = function() {
 				for(i=this.slots.length-1; i>-1;i--){
 					if(i>0){
 						this.slots[i].updateImage(this.slots[i-1].image);
+						this.slots[i].updateName(this.slots[i-1].name);
 						this.slots[i].isEmpty = this.slots[i-1].isEmpty;
 						}
 						else{
-							this.slots[i].updateImage(asset);
+							this.slots[i].updateImage(asset.image);
+							this.slots[i].updateName(asset.name);
 							this.slots[i].isEmpty = false;
 							}
 					}
@@ -383,10 +399,12 @@ window.onload = function() {
 				for(i=this.slots.length-1; i>-1;i--){
 					if(i>0){
 						this.slots[i].updateImage(this.slots[i-1].image);
+						this.slots[i].updateName(this.slots[i-1].name);
 						this.slots[i].isEmpty = this.slots[i-1].isEmpty;
 						}
 						else{
-							this.slots[i].updateImage(asset);
+							this.slots[i].updateImage(asset.image);
+							this.slots[i].updateName(asset.name);
 							this.slots[i].isEmpty = false;
 							}
 					}
@@ -396,8 +414,11 @@ window.onload = function() {
 
 	var Trinca = enchant.Class.create({
 		initialize: function(slots){
+
 			this.slots = slots;
+
 			this.checkEndgame = function(){
+				
 				for(i=0; i<this.slots.length;i++){
 					if(this.slots[i].isEmpty){
 						return false;
@@ -405,7 +426,16 @@ window.onload = function() {
 					}
 					return true;
 				}
-			}
+			this.getTrinca = function(){
+				
+				var trinca = [];
+
+				for(i=0; i<this.slots.length;i++){
+					trinca.push(this.slots[i]);
+					return trinca;
+					}
+				}
+			}	
 		});
 //=====================================================================================================//
 	//Criador de Slots
@@ -439,110 +469,27 @@ window.onload = function() {
 		
     game.onload = function() {
 
-			  //cartas disponíveis para jogar.
-   			  var cards = [
-					game.assets['../imgs/cards/casa-01.png'],
-					game.assets['../imgs/cards/casa-02.png'],
-					game.assets['../imgs/cards/casa-03.png'],
-					game.assets['../imgs/cards/casa-04.png'],
-					game.assets['../imgs/cards/casa-05.png'],
-					game.assets['../imgs/cards/casa-06.png'],
-					game.assets['../imgs/cards/casa-07.png'],
-					game.assets['../imgs/cards/casa-08.png'],
-					game.assets['../imgs/cards/casa-09.png'],
-					game.assets['../imgs/cards/casa-10.png'],
-					game.assets['../imgs/cards/casa-11.png'],
-					game.assets['../imgs/cards/casa-12.png'],
-					game.assets['../imgs/cards/casa-13.png'],
-					game.assets['../imgs/cards/casa-14.png'],
-					game.assets['../imgs/cards/casa-15.png'],
-					game.assets['../imgs/cards/casa-16.png'],
-					game.assets['../imgs/cards/casa-17.png'],
-					game.assets['../imgs/cards/casa-18.png'],
-					game.assets['../imgs/cards/casa-19.png'],
-					game.assets['../imgs/cards/casa-20.png'],
-					game.assets['../imgs/cards/casa-21.png'],
-					game.assets['../imgs/cards/casa-22.png'],
-					game.assets['../imgs/cards/casa-23.png'],
-					game.assets['../imgs/cards/casa-24.png'],
-					game.assets['../imgs/cards/casa-25.png'],
-					game.assets['../imgs/cards/casa-26.png'],
-					game.assets['../imgs/cards/casa-27.png'],
-					game.assets['../imgs/cards/casa-28.png'],
-					game.assets['../imgs/cards/casa-29.png'],
-					game.assets['../imgs/cards/casa-30.png'],
-					game.assets['../imgs/cards/casa-31.png'],
-					game.assets['../imgs/cards/casa-32.png'],
-					game.assets['../imgs/cards/casa-33.png'],
-					game.assets['../imgs/cards/casa-34.png'],
-					game.assets['../imgs/cards/casa-35.png'],
-					game.assets['../imgs/cards/casa-36.png'],
-					game.assets['../imgs/cards/casa-37.png'],
-					game.assets['../imgs/cards/casa-38.png'],
-					game.assets['../imgs/cards/casa-39.png'],
-					game.assets['../imgs/cards/casa-40.png'],
-					game.assets['../imgs/cards/casa-41.png'],
-					game.assets['../imgs/cards/casa-42.png'],
-					game.assets['../imgs/cards/casa-43.png'],
-					game.assets['../imgs/cards/casa-44.png'],
-					game.assets['../imgs/cards/casa-45.png'],
-					game.assets['../imgs/cards/casa-46.png'],
-					game.assets['../imgs/cards/casa-47.png'],
-					game.assets['../imgs/cards/casa-48.png'],
-					game.assets['../imgs/cards/casa-49.png'],
-					game.assets['../imgs/cards/casa-50.png'],
-					game.assets['../imgs/cards/casa-51.png'],
-					game.assets['../imgs/cards/casa-52.png'],
-					game.assets['../imgs/cards/casa-53.png'],
-					game.assets['../imgs/cards/casa-54.png'],
-					game.assets['../imgs/cards/casa-55.png'],
-					game.assets['../imgs/cards/casa-56.png'],
-					game.assets['../imgs/cards/casa-57.png'],
-					game.assets['../imgs/cards/casa-58.png'],
-					game.assets['../imgs/cards/casa-59.png'],
-					game.assets['../imgs/cards/casa-60.png'],
-					game.assets['../imgs/cards/casa-61.png'],
-					game.assets['../imgs/cards/casa-62.png'],
-					game.assets['../imgs/cards/casa-63.png'],
-					game.assets['../imgs/cards/casa-64.png'],
-					game.assets['../imgs/cards/casa-65.png'],
-					game.assets['../imgs/cards/casa-66.png'],
-					game.assets['../imgs/cards/casa-67.png'],
-					game.assets['../imgs/cards/casa-68.png'],
-					game.assets['../imgs/cards/casa-69.png'],
-					game.assets['../imgs/cards/casa-70.png'],
-					game.assets['../imgs/cards/casa-71.png'],
-					game.assets['../imgs/cards/casa-72.png'],
-					game.assets['../imgs/cards/casa-73.png'],
-					game.assets['../imgs/cards/casa-74.png'],
-					game.assets['../imgs/cards/casa-75.png'],
-					game.assets['../imgs/cards/casa-76.png'],
-					game.assets['../imgs/cards/casa-77.png'],
-					game.assets['../imgs/cards/casa-78.png'],
-					game.assets['../imgs/cards/casa-79.png'],
-					game.assets['../imgs/cards/casa-80.png'],
-					game.assets['../imgs/cards/casa-81.png'],
-					game.assets['../imgs/cards/casa-82.png'],
-					game.assets['../imgs/cards/casa-83.png'],
-					game.assets['../imgs/cards/casa-84.png'],
-					game.assets['../imgs/cards/casa-85.png'],
-					game.assets['../imgs/cards/casa-86.png'],
-					game.assets['../imgs/cards/casa-87.png'],
-					game.assets['../imgs/cards/casa-88.png'],
-					game.assets['../imgs/cards/casa-89.png'],
-					game.assets['../imgs/cards/casa-90.png'],
-					game.assets['../imgs/cards/casa-91.png'],
-					game.assets['../imgs/cards/casa-92.png'],
-					game.assets['../imgs/cards/casa-93.png'],
-					game.assets['../imgs/cards/casa-94.png'],
-					game.assets['../imgs/cards/casa-95.png'],
-					game.assets['../imgs/cards/casa-96.png'],
-					game.assets['../imgs/cards/casa-97.png'],
-					game.assets['../imgs/cards/casa-98.png'],
-					game.assets['../imgs/cards/casa-99.png'],
-					game.assets['../imgs/cards/casa-100.png'],
-			  ];
 
+		//cartas disponíveis para jogar.
+		var cards = [];
+		var srt_card;
+		var card;
+		var asset;
+
+		for(i=1;i<101;i++){
+			if(i<10)
+				str_card = "casa-0"+i;
+			else
+				str_card = "casa-"+i;
+
+			asset = game.assets['../imgs/cards/'+str_card+'.png'];
+
+			if(asset)
+				card = new Card(srt_card, asset);
+
+			cards.push(card);
+
+		}
 
 		//!!! Esta ordem precisa ser conservada. !!!
 		//os argumentos de createSlots se refere a linha que a carta será posicionada e o tipo de slot;
@@ -557,11 +504,7 @@ window.onload = function() {
 		/*for(var i=0;i<6;i++){	
 			//deck.giveCard(holder);
 		}*/
-
-		//$("#enchant-stage").css("display","inline");
-		$("#enchant-stage").show();
-
+		$("#enchant-stage").css("display","inline");
     };
-
     game.start();
 };
