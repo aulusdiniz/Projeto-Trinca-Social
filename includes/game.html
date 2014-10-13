@@ -25,12 +25,21 @@
 <body>
 <div style="float:right; background-color:#FFF; font-size:30px; margin:20px;"><a href="../user_home.php">Voltar</a></div>
 
-<div id="ask_publish"></div>
-<div id="publish_now">
+<div id="ask_publish">
     <h1>Gostaria de publicar esta trinca agora?</h1>
-    <a href>. Sim .</a>
-    <a href>. Não .</a>
+    <a href="javascript:next_step(true);">. Sim .</a>
+    <a href="javascript:next_step(false)">. Não .</a>
+</div>
 
+<div id="publish_now_cards">    
+    <img id="card1" height = 25% width = 25% src=""></img>
+    <img id="card2" height = 25% width = 25% src=""></img>
+    <img id="card3" height = 25% width = 25% src=""></img>
+</div>
+<div id="publish_now">
+    <h1>Escreva uma frase justificando sua trinca:(Exemplo)</h1>
+    <textarea></textarea>
+    <a href="javascript:publish()">. Publicar .</a>
 </div>
 
 </body>

@@ -1,3 +1,32 @@
+//função que é executada na resposta da caixa: "gostaria de publicar essa trinca agora?".
+function next_step(bool){
+	if(bool){
+		$('#enchant-stage').css('display','none');
+		$('#enchant-stage').css('opacity','1');
+		$('#ask_publish').css('display','none');
+		$('#publish_now').css('display','inline');	
+		$('#publish_now_cards').css('display','inline');	
+		$('#card1').attr('src',"../imgs/cards/"+getCard(0)+".png");
+		$('#card2').attr('src',"../imgs/cards/"+getCard(1)+".png");
+		$('#card3').attr('src',"../imgs/cards/"+getCard(2)+".png");
+		
+	}else{
+		//adicionar ação para botão "não".
+	}
+	
+
+}
+
+function publish(bool){
+	//função ao pressionar o botão de publicar na caixa de dialogo da justificativa.
+}
+
+function getCard(index){
+	
+	return trinca_export[index];
+}
+
+var trinca_export = [];
 
  	enchant();
 window.onload = function() {	
@@ -117,8 +146,8 @@ window.onload = function() {
 			'../imgs/cards/deck.png'
 			);
 		
-		//fundo verde, igual ao html;	
-		game.rootScene.backgroundColor = '#0d591d';
+	//fundo verde, igual ao html;	
+	game.rootScene.backgroundColor = '#0d591d';
 
 	//Baralho, atualiza os slots do holder
     var Deck = enchant.Class.create(enchant.Sprite, {
@@ -158,7 +187,7 @@ window.onload = function() {
 					if(this.availCards.length<1){
 						this.image = game.assets['../imgs/cards/slot.png'];
 						}
-				}
+					}
 				}	
 			this.giveHand = function(){
 					for(var i=0; i<6; i++){
@@ -324,12 +353,10 @@ window.onload = function() {
 									Dealer.tradeOp = 0;
 									
 									if(trinca.checkEndgame()){
-										//alert("Você já pode publicar uma trinca!");
-										//$("#enchant-stage").css("display","none");
-										//$("#enchant-stage").hide();
+										$("#ask_publish").css("display","inline");
+										$("#enchant-stage").css("pointer-events","none");
+										$("#enchant-stage").css("opacity","0.5");
 
-										//$("#publish_now").css({"display":"block","background-color":"white"});
-										$("#publish_now").css("display","inline");
 										}
 							}
 							else{
@@ -423,17 +450,27 @@ window.onload = function() {
 					if(this.slots[i].isEmpty){
 						return false;
 						}
-					}
+					}	
+					this.exportTrinca();
 					return true;
 				}
+
 			this.getTrinca = function(){
 				
-				var trinca = [];
+				return this.slots;
+				}
+			this.exportTrinca = function(){
+				
+				var resul = false;
 
-				for(i=0; i<this.slots.length;i++){
-					trinca.push(this.slots[i]);
-					return trinca;
+				if(this.slots[0].name && this.slots[1].name && this.slots[2].name){
+					trinca_export.push(this.slots[0].name);
+					trinca_export.push(this.slots[1].name);
+					trinca_export.push(this.slots[2].name);
+
+					resul=true;
 					}
+					return resul;
 				}
 			}	
 		});
@@ -472,23 +509,28 @@ window.onload = function() {
 
 		//cartas disponíveis para jogar.
 		var cards = [];
-		var srt_card;
 		var card;
 		var asset;
+		var srt_card;
 
 		for(i=1;i<101;i++){
-			if(i<10)
-				str_card = "casa-0"+i;
-			else
-				str_card = "casa-"+i;
+			if(i<10){
+				str_card = "casa-0" + i.toString();
+				}
+			else{
+				str_card = "casa-" + i.toString();
+				}
 
-			asset = game.assets['../imgs/cards/'+str_card+'.png'];
+			var name = str_card;
 
-			if(asset)
-				card = new Card(srt_card, asset);
+			var path = "../imgs/cards/" + str_card + ".png";
+			asset = game.assets[path];
 
-			cards.push(card);
-
+			if(asset){
+				
+				card = new Card(name, asset);
+				cards.push(card);
+				}
 		}
 
 		//!!! Esta ordem precisa ser conservada. !!!
