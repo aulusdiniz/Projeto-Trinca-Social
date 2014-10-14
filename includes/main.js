@@ -2,18 +2,21 @@
 function next_step(bool){
 	if(bool){
 		$('#enchant-stage').css('display','none');
-		$('#enchant-stage').css('opacity','1');
 		$('#ask_publish').css('display','none');
 		$('#publish_now').css('display','inline');	
 		$('#publish_now_cards').css('display','inline');	
 		$('#card1').attr('src',"../imgs/cards/"+getCard(0)+".png");
 		$('#card2').attr('src',"../imgs/cards/"+getCard(1)+".png");
 		$('#card3').attr('src',"../imgs/cards/"+getCard(2)+".png");
-		
+
 	}else{
 		//adicionar ação para botão "não".
-	}
-	
+		$('#enchant-stage').css('display','inline');
+		$('#ask_publish').css('display','none');
+		$('#btn_publish').css('display','inline');
+		$("#enchant-stage").css("pointer-events","auto");
+		$("#enchant-stage").css("opacity","1");
+	}	
 
 }
 
@@ -448,6 +451,8 @@ window.onload = function() {
 				
 				for(i=0; i<this.slots.length;i++){
 					if(this.slots[i].isEmpty){
+						//jquery para sumir com o botão.
+						$("#btn_publish").css("display","none");
 						return false;
 						}
 					}	
@@ -459,6 +464,7 @@ window.onload = function() {
 				
 				return this.slots;
 				}
+
 			this.exportTrinca = function(){
 				
 				var resul = false;
@@ -470,6 +476,7 @@ window.onload = function() {
 
 					resul=true;
 					}
+
 					return resul;
 				}
 			}	

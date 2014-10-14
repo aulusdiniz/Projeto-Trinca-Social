@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
   
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <script src="jquery-1.11.1.js"></script>
     <script type="text/javascript" src="enchant.js-builds-0.8.1/build/enchant.js"></script>
     <script type="text/javascript" src="main.js"></script>
 
@@ -25,16 +26,21 @@
 <body>
 <div style="float:right; background-color:#FFF; font-size:30px; margin:20px;"><a href="../user_home.php">Voltar</a></div>
 
+<div id="btn_publish" onclick="next_step(true)">. Publicar! .</div>
+
 <div id="ask_publish">
     <h1>Gostaria de publicar esta trinca agora?</h1>
     <a href="javascript:next_step(true);">. Sim .</a>
-    <a href="javascript:next_step(false)">. Não .</a>
+    <a href="javascript:next_step(false);">. Não .</a>
 </div>
 
 <div id="publish_now_cards">    
-    <img id="card1" height = 25% width = 25% src=""></img>
-    <img id="card2" height = 25% width = 25% src=""></img>
-    <img id="card3" height = 25% width = 25% src=""></img>
+    <a>Causa do problema</a>
+    <img id="card1" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
+    <a>Problema</a>
+    <img id="card2" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
+    <a>Solução do problema</a>
+    <img id="card3" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
 </div>
 <div id="publish_now">
     <h1>Escreva uma frase justificando sua trinca:(Exemplo)</h1>

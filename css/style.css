@@ -407,18 +407,47 @@ textarea {
 
 #publish_now_cards {
 	display:none;
-	padding: 1% 1% 1% 1%;
+	padding: 1% 3% 3% 3%;
 	position: absolute;
-	margin: 3% 25% 10% 27%;
+	margin: 3% 25% 10% 30%;
+	min-width: 40%;
+	font-style: bold;
+	font-size: 18px;
+	color: white;
 	z-index: 10;
 }
+
+#publish_now_cards a{
+	display: inline;
+	position: absolute;
+	min-width: 100px;
+	margin: -40px 25% 10% 1%;
+	z-index: 10;
+}
+
+#btn_publish {
+	display:none;
+	position: absolute;
+	background-color: #90e2ea;
+	color: #307285;
+	text-decoration: none;
+	height: 30px;
+	font-size: 25px;
+	font-family: Verdana, Arial;
+	font-style: normal;
+	margin-left: 60%;
+	margin-top: 40%;
+	border: 3px solid #006ba6;
+    border-radius: 12px;
+}
+
 
 #publish_now {
 	display:none;
 	padding: 1% 1% 1% 1%;
 	position: absolute;
 	background-color: #9de5aa;
-	min-height: 40%;
+	min-height: 45%;
 	min-width: 40%;
 	margin: 20% 25% 30% 27%;
 	border: 5px solid #006ba6;
@@ -437,14 +466,16 @@ textarea {
 }
 
 #publish_now a{
-	position: relative;
+	position: absolute;
 	background-color: #90e2ea;
 	color: #307285;
 	text-decoration: none;
 	font-size: 25px;
 	font-family: Verdana, Arial;
 	font-style: normal;
-	margin-left: 73%;
+	margin-left: -25%;
+	margin-top: 26%;
+	padding-top: 5px 5px 5px 5px;
 	border: 3px solid #006ba6;
     border-radius: 12px;
 
