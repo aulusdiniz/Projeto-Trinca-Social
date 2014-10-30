@@ -1,3 +1,14 @@
+enchant();
+
+//var _trinca;
+
+var trinca_export = [];
+
+function getCard(index){
+	
+	return trinca_export[index];
+}
+
 //função que é executada na resposta da caixa: "gostaria de publicar essa trinca agora?".
 function next_step(bool){
 	if(bool){
@@ -8,6 +19,8 @@ function next_step(bool){
 		$('#card1').attr('src',"../imgs/cards/"+getCard(0)+".png");
 		$('#card2').attr('src',"../imgs/cards/"+getCard(1)+".png");
 		$('#card3').attr('src',"../imgs/cards/"+getCard(2)+".png");
+		$('#trinca_labels').css('display','none');
+		$('#trinca_round').css('display','none');
 
 	}else{
 		//adicionar ação para botão "não".
@@ -22,16 +35,26 @@ function next_step(bool){
 
 function publish(bool){
 	//função ao pressionar o botão de publicar na caixa de dialogo da justificativa.
-}
-
-function getCard(index){
 	
-	return trinca_export[index];
+	//mostra o fundo.
+	$('#enchant-stage').css('display','inline');
+	$('#btn_publish').css('display','none');
+	$("#enchant-stage").css("pointer-events","auto");
+	$("#enchant-stage").css("opacity","1");
+	$('#trinca_labels').css('display','inline');
+	$('#trinca_round').css('display','inline');
+	
+	//esconde a tela de publicar.
+	$('#publish_now').css('display','none');	
+	$('#publish_now_cards').css('display','none');	
+	$('#card1').attr('src',"");
+	$('#card2').attr('src',"");
+	$('#card3').attr('src',"");
+
+	_trinca.resetAndPrepare();
+
 }
 
-var trinca_export = [];
-
- 	enchant();
 window.onload = function() {	
     var game = new Game(window.screen.availWidth, window.screen.availHeight);
 	//Escalas
@@ -359,7 +382,6 @@ window.onload = function() {
 										$("#ask_publish").css("display","inline");
 										$("#enchant-stage").css("pointer-events","none");
 										$("#enchant-stage").css("opacity","0.5");
-
 										}
 							}
 							else{
@@ -442,7 +464,7 @@ window.onload = function() {
 			}
 		});
 
-	var Trinca = enchant.Class.create({
+		var Trinca = enchant.Class.create({
 		initialize: function(slots){
 
 			this.slots = slots;
@@ -451,11 +473,14 @@ window.onload = function() {
 				
 				for(i=0; i<this.slots.length;i++){
 					if(this.slots[i].isEmpty){
+						
 						//jquery para sumir com o botão.
 						$("#btn_publish").css("display","none");
 						return false;
 						}
 					}	
+					
+					//exportando as cartas da trinca.
 					this.exportTrinca();
 					return true;
 				}
@@ -465,6 +490,18 @@ window.onload = function() {
 				return this.slots;
 				}
 
+			this.resetAndPrepare = function(){
+
+				var i;
+				console.log('trinca should be reseted..');
+				for(i=0; i<this.slots.length;i++){
+					this.slots[i].name = null;
+					this.slots[i].image = game.assets['../imgs/cards/slot.png'];
+					}
+
+				}
+
+			// reverter por atributo acessado por método.
 			this.exportTrinca = function(){
 				
 				var resul = false;
@@ -548,6 +585,7 @@ window.onload = function() {
 		var deck   = new Deck(desl_hor,desl_ver+spacing_ver, holder, hand, cards);
 		deck.giveHand();
 		var trinca = new Trinca(createSlots(1,3,-6, 0));
+		window._trinca = trinca;
 		var dealer = new Dealer(deck, trinca);
 		//Destribui as 6 cards iniciais pro descarte.
 		/*for(var i=0;i<6;i++){	

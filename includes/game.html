@@ -24,6 +24,17 @@
 </head>
 
 <body>
+
+<div id="trinca_round">
+    <h3>Trinca</h3>
+</div>
+
+<div id="trinca_labels">
+    <h3>Causa <br>do <br>problema</h3>
+    <h3>Problema</h3>
+    <h3>Solução <br>do <br>problema</h3>
+</div>
+
 <div style="float:right; background-color:#FFF; font-size:30px; margin:20px;"><a href="../user_home.php">Voltar</a></div>
 
 <div id="btn_publish" onclick="next_step(true)">. Publicar! .</div>
@@ -35,16 +46,18 @@
 </div>
 
 <div id="publish_now_cards">    
-    <a>Causa do problema</a>
+    <a>Causa <br>do <br>problema</a>
     <img id="card1" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
     <a>Problema</a>
     <img id="card2" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
-    <a>Solução do problema</a>
+    <a>Solução <br>do <br>problema</a>
     <img id="card3" style="margin-right: 40px;" height = 25% width = 25% src=""></img>
 </div>
 <div id="publish_now">
     <h1>Escreva uma frase justificando sua trinca:(Exemplo)</h1>
-    <textarea></textarea>
+    <div class="textarea_div">
+        <textarea  class="text_trinca_just"></textarea>
+    </div>
     <a href="javascript:publish()">. Publicar .</a>
 </div>
 
